@@ -23,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Holding")
@@ -32,24 +33,31 @@ public class Holding implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	@NotNull
+	private Long id = new Long(-1);
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer i) {
-		this.id = i;
+	public void setId(Long l) {
+		if (l != null) {
+			this.id = l;
+		}
 	}
 
+	@NotNull
 	private Float purchasePrice;
 
+	@NotNull
 	private Integer quantity;
 
-	private Date purchaseDate;
+	private Date purchaseDate = new Date();
 
+	@NotNull
 	private Integer accountId;
 
+	@NotNull
 	private String quoteSymbol;
 
 	public Float getPurchasePrice() {
@@ -73,7 +81,9 @@ public class Holding implements Serializable {
 	}
 
 	public void setPurchaseDate(Date d) {
-		this.purchaseDate = d;
+		if (d != null) {
+			this.purchaseDate = d;
+		}
 	}
 
 	public Integer getAccountId() {

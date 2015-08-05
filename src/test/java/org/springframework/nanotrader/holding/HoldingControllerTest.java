@@ -42,14 +42,17 @@ public class HoldingControllerTest {
 	@Test
 	public void testCountByAccount() {
 		assertEquals(2, holdingController.countByAccount(new Integer(5)));
+		assertEquals(0, holdingController.countByAccount(new Integer(555)));
 	}
 
 	@Test
 	public void testFind() {
-		Integer id = new Integer(3);
+		Long id = new Long(3);
 		Holding h = holdingController.findById(id);
 		assertNotNull(h);
 		assertEquals(id, h.getId());
+		h = holdingController.findById(new Long(12345));
+		assertNull(h);
 	}
 
 	@Test
@@ -76,12 +79,18 @@ public class HoldingControllerTest {
 	@Test
 	public void testDelete() {
 		Holding h = new Holding();
+		h.setAccountId(new Integer(543));
+		h.setQuoteSymbol("delete me");
+		h.setQuantity(new Integer(321));
+		h.setPurchasePrice(new Float(23.45));
 		Holding h2 = holdingController.save(h);
 		assertNotNull(h2);
-		Integer id = h2.getId();
+		Long id = h2.getId();
 		holdingController.delete(h2);
 		Holding h3 = holdingController.findById(id);
 		assertNull(h3);
+
+		holdingController.delete(h2);
 	}
 
 	@Test
@@ -89,5 +98,20 @@ public class HoldingControllerTest {
 		List<Holding> h = holdingController.findByAccountId(new Integer(5));
 		assertNotNull(h);
 		assertEquals(2, h.size());
+
+		h = holdingController.findByAccountId(new Integer(555));
+		assertNotNull(h);
+		assertEquals(0, h.size());
+	}
+
+	@Test
+	public void testFindPurchaseBasis() {
+		Float f = holdingController
+				.findPurchaseBasisByAccountId(new Integer(5));
+		assertNotNull(f);
+		assertEquals(new Float(70071.39), f);
+
+		f = holdingController.findPurchaseBasisByAccountId(new Integer(555555));
+		assertEquals(new Float(0), f);
 	}
 }

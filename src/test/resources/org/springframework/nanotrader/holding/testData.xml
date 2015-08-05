@@ -1,5 +1,5 @@
 <dataset>
-    <Holding id="1" quote_symbol="GOOG" quantity="123" account_id="5"/>
-    <Holding id="2" quote_symbol="YHOO" quantity="234" account_id="5"/>
-    <Holding id="3" quote_symbol="VMW" quantity="345" account_id="6"/>
+    <Holding id="1" quote_symbol="GOOG" quantity="123" account_id="5" purchase_price="123.45"/>
+    <Holding id="2" quote_symbol="YHOO" quantity="234" account_id="5"  purchase_price="234.56"/>
+    <Holding id="3" quote_symbol="VMW" quantity="345" account_id="6"  purchase_price="345.67"/>
 </dataset>

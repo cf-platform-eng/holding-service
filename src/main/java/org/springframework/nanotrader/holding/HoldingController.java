@@ -3,7 +3,6 @@ package org.springframework.nanotrader.holding;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/quoteService")
+@RequestMapping("/holdings")
 public class HoldingController {
 
 	@Autowired
@@ -22,13 +21,13 @@ public class HoldingController {
 		return holdingRepository.count();
 	}
 
-	@RequestMapping("/count?accountId={accountId}")
-	public long countByAccount(@Param(value = "accountId") Integer accountId) {
+	@RequestMapping("/account/{accountId}/count")
+	public long countByAccount(@PathVariable Integer accountId) {
 		return holdingRepository.findCountOfHoldings(accountId);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Holding findById(@PathVariable Integer id) {
+	public Holding findById(@PathVariable Long id) {
 		return holdingRepository.findOne(id);
 	}
 
@@ -42,9 +41,17 @@ public class HoldingController {
 		holdingRepository.delete(holding);
 	}
 
-	@RequestMapping("/find?accountId={accountId}")
-	public List<Holding> findByAccountId(
-			@Param(value = "accountId") Integer accountId) {
+	@RequestMapping("/account/{accountId}")
+	public List<Holding> findByAccountId(@PathVariable Integer accountId) {
 		return holdingRepository.findByAccountId(accountId);
+	}
+
+	@RequestMapping("/account/{accountId}/purchaseBasis")
+	public Float findPurchaseBasisByAccountId(@PathVariable Integer accountId) {
+		Float f = holdingRepository.findPurchaseBasis(accountId);
+		if (f == null) {
+			return new Float(0.0);
+		}
+		return f;
 	}
 }
